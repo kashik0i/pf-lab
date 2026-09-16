@@ -32,17 +32,33 @@ skills/
 | `allowed-tools` | no | restricts the tools the skill may call (`shell`, `http`, `file_write`, …). Omit for no restriction. Legacy alias: `tools`. |
 | `disable-model-invocation` | no | `true` = user-only, invoked via `/<name>` |
 
-The body is delivered to the model verbatim on `load_skill`. `${SKILL_DIR}` in the
-body expands to the skill's absolute directory path, so bundled files are reachable
-by ordinary path:
+The body is delivered to the model verbatim on `load_skill`. Bundled files can be
+reached two ways.
+
+**`read_payloads` — the intended path for curated payload lists.** A shipped tool
+(`src/tools/payloads.ts`, registered in both `main` and the `v0.1.20` release) that
+resolves files inside a skill's own `payloads/` directory, with the skill name plus a
+relative path and `../` escapes rejected:
+
+```text
+read_payloads(skill="ssti", file="jinja2.txt")
+```
+
+It caps at 256 KiB with a 16 KiB preview, and lists a directory when given no `file`.
+This is the right way to ship wordlists and probe files: the agent asks for them by
+name instead of inventing payloads from training memory.
+
+The shipped upstream manifests declare it properly — `ssti`, `jwt`, `graphql`,
+`deserialize`, `supabase` and `takeover` all list `read_payloads` in their
+`allowed-tools`. **Do the same in yours if you ship a `payloads/` directory**, since
+that manifest is the only declaration of what your playbook may touch.
+
+**`${SKILL_DIR}` — for everything else.** Expands to the skill's absolute directory
+path, so bundled scripts and data are reachable by ordinary path:
 
 ```sh
 nmap -sV --open -iL "${SKILL_DIR}/payloads/targets.txt"
 ```
-
-> **Do not call `read_payloads(...)`.** PentesterFlow's own `skills/_template/SKILL.md`
-> demonstrates it, but no such tool exists in the released binary *or* on `main` —
-> it is a stale doc. Use `${SKILL_DIR}` plus the normal file/shell tools.
 
 ## Loading them
 
