@@ -53,6 +53,10 @@ The shipped upstream manifests declare it properly — `ssti`, `jwt`, `graphql`,
 `allowed-tools`. **Do the same in yours if you ship a `payloads/` directory**, since
 that manifest is the only declaration of what your playbook may touch.
 
+The two playbooks in this repo do not ship a `payloads/` directory — their method is
+commands, not wordlists — so neither declares the tool. That is deliberate, not an
+omission: declaring a tool you never call is noise in the manifest.
+
 **`${SKILL_DIR}` — for everything else.** Expands to the skill's absolute directory
 path, so bundled scripts and data are reachable by ordinary path:
 
