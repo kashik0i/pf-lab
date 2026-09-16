@@ -1,0 +1,29 @@
+{
+  "_comment": "Copy the entries you want into <state>/runN/.pentesterflow/config.json under mcp_servers. None are enabled by default. See README.md for the schema rules (stdio only, no shell metacharacters in command or any args element, spawned at session start).",
+
+  "mcp_servers": [
+    {
+      "_comment": "Built in as --browser; listed here for reference. Drives a real browser for authenticated flows.",
+      "name": "browser",
+      "command": "npx",
+      "args": ["-y", "@browsermcp/mcp@latest"]
+    },
+
+    {
+      "_comment": "Example: a third-party security hub. Overlaps the scanners already in this image -- see README.md before enabling.",
+      "name": "sec-hub",
+      "command": "npx",
+      "args": ["-y", "mcp-security-hub@latest"]
+    },
+
+    {
+      "_comment": "Example: credentials via an env map, sourced from the container environment rather than written to config.json.",
+      "name": "example-with-env",
+      "command": "npx",
+      "args": ["-y", "some-mcp-server@latest"],
+      "env": {
+        "API_KEY": "${MCP_API_KEY}"
+      }
+    }
+  ]
+}

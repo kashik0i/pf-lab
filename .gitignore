@@ -1,0 +1,52 @@
+# --- unrelated sibling projects in this workspace ---
+/cat-safe-plants/
+
+# --- original local working copies -------------------------------------------
+# These are the pre-sanitization versions the repo was built from. They carry the
+# author's real network identifiers, so they must never be committed. The
+# shareable versions live under pf-lab/.
+/pentesterflow-docker/
+/apache-cve-lab/
+/make-report.sh
+/pf-monitor.sh
+/pf-watch.sh
+
+# --- engagement data: never commit live scan output or findings ---
+/pf-runs/
+/**/findings/
+/applied-cves/
+*.gnmap
+*.xml
+*.nmap
+
+# --- secrets ---
+.env
+*.key
+key
+
+# --- build artifacts ---
+cve-lab/build/
+pf-lab/cve-lab/build/
+scratch/
+pf-lab/cve-lab/scratch/
+.report-build/
+__pycache__/
+*.py[cod]
+*.o
+*.so
+*.pdf
+
+# --- logs and scratch ---
+*.log
+/report-build/
+/wef-check/
+/.dshscan/
+/.opencode/
+/.pf-panes
+/.pf-run2-pane
+
+# --- editor / IDE project files ---
+.idea/
+.vscode/
+*.iml
+*.swp
